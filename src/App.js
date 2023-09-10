@@ -1,23 +1,57 @@
-import logo from './logo.svg';
 import './App.css';
+import { NavLink, Routes, Route, useNavigate } from "react-router-dom";
+import { useEffect, useState } from 'react';
+import SignUp from './components/SignUp';
+import Login from './components/Login';
+import Home from './components/Home';
+import UserListe from './components/UserListe';
+import Nachrichten from './components/Nachrichten';
 
 function App() {
+
+  const baseURL = process.env.REACT_APP_API_BASE_URL;
+  const [ loggedIn, setLoggedin ] = useState(false); //gets passed down to login component
+
+
+
+
+
+  function handleLogout(){
+
+  }
+
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <nav>
+      <NavLink className="nav-elem" to="/">
+        HOME
+      </NavLink>
+      {!loggedIn && <><NavLink className="nav-elem" to="/signup">
+        SIGNUP
+      </NavLink>
+      <NavLink className="nav-elem" to="/login">
+        LOGIN
+      </NavLink></>}
+      {loggedIn && <><NavLink className="nav-elem" to="/userliste">
+        USERLISTE
+      </NavLink>
+      <NavLink className="nav-elem" to="/nachrichten">
+        NACHRICHTEN
+      </NavLink>
+      <button onClick={handleLogout}>
+        LOGOUT
+      </button></>}
+      </nav>
+
+      <Routes>
+        <Route path="/" element={<Home />}/>
+        <Route path="/signup" element={<SignUp />}/>
+        <Route path="/login" element={<Login />}/>
+        <Route path="/userliste" element={<UserListe />}/>
+        <Route path="/nachrichten" element={<Nachrichten/>}/>
+      </Routes>
+
     </div>
   );
 }
