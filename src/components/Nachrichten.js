@@ -3,7 +3,7 @@ export default function Nachrichten(){
 
 
     return (
-    <div>
+    <div className="lnachrichten container">
         Nachrichten
     </div>
     );

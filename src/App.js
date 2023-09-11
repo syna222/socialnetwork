@@ -11,9 +11,8 @@ function App() {
 
   const baseURL = process.env.REACT_APP_API_BASE_URL;
   const [ loggedIn, setLoggedin ] = useState(false); //gets passed down to login component
-
-
-
+  const [ user, setUser ] = useState(JSON.parse(localStorage.getItem("user")));
+  const [ token, setToken ] = useState(localStorage.getItem("authtoken"));
 
 
   function handleLogout(){
@@ -47,7 +46,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />}/>
         <Route path="/signup" element={<SignUp />}/>
-        <Route path="/login" element={<Login />}/>
+        <Route path="/login" element={<Login setLoggedin={setLoggedin} setUser={setUser} setToken={setToken}/>}/>
         <Route path="/userliste" element={<UserListe />}/>
         <Route path="/nachrichten" element={<Nachrichten/>}/>
       </Routes>
