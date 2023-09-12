@@ -21,7 +21,20 @@ export default function SignUp(){
             username: userName, 
             email: email, 
             passwort: passwort })
-            .then()
+            .catch((error) => {
+                if (error.response) {
+                    // Axios error with a response
+                    console.log(error.response.data);
+                    alert(error.response.data);
+                  } else {
+                    // Non-Axios error without a response
+                    console.log("An error occurred:", error.message);
+                    alert("An error occurred. Please try again.");
+                  }
+            });
+        inputUsernameRef.current.value = "";
+        inputEmailRef.current.value = "";
+        inputPasswortRef.current.value = "";
     }
 
     return (

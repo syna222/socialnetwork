@@ -41,8 +41,8 @@ export default function Login({ setLoggedin, setUser, setToken }){
                     alert("An error occurred. Please try again.");
                   }
             });
-            inputEmailRef.current.value = "";
-            inputPasswortRef.current.value = "";
+        inputEmailRef.current.value = "";
+        inputPasswortRef.current.value = "";
     }
 
 

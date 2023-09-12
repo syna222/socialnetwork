@@ -4,7 +4,7 @@ export default function Home(){
 
     return (
     <div className="home container">
-        Welcome!
+        <h2>Willkommen!</h2>
     </div>
     );
 }
