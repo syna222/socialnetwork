@@ -8,6 +8,7 @@ import Home from './components/Home';
 import UserListe from './components/UserListe';
 import Nachrichten from './components/Nachrichten';
 import NeueNachricht from './components/NeueNachricht';
+import { logDOM } from '@testing-library/react';
 
 function App() {
 
@@ -35,6 +36,13 @@ function App() {
       }
     })
   }, []);
+
+  //keep loggedIn state based on existence of token:
+  useEffect(() => {
+    if (token) {
+      setLoggedin(true);
+    }
+  }, [token]);
 
 
   function handleLogout(e){
@@ -79,7 +87,7 @@ function App() {
         <Route path="/login" element={<Login setLoggedin={setLoggedin} setUser={setUser} setToken={setToken}/>}/>
         <Route path="/userliste" element={<UserListe userList={userList}/>}/>
         <Route path="/nachrichten" element={<Nachrichten/>}/>
-        <Route path="/neuenachricht" element={<NeueNachricht />}/>
+        <Route path="/neuenachricht" element={<NeueNachricht userList={userList} user={user}/>}/>
       </Routes>
 
     </div>
