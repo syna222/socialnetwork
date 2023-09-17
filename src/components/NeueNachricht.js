@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 
-export default function NeueNachricht({userList, user}){
+export default function NeueNachricht({userList, user, setUser}){
 
     const baseURL = process.env.REACT_APP_API_BASE_URL;
     const recRef = useRef();
@@ -29,7 +29,7 @@ async function handleSubmit(e){
         e.preventDefault();
         //empfänger id rausfinden:
         const empfID = userList.filter(user => user.username === empfaengerInput)[0]._id;
-        let messageID = ""; //state var use was too slow for the 2nd post request
+        let messageID = ""; //state var use was too slow for 2nd post request
         let URL = `${baseURL}/nachrichten`;
         //create nachricht:
         await axios.post(URL, { 
@@ -37,8 +37,7 @@ async function handleSubmit(e){
                 an: empfID, 
                 text: text })
                 .then(function (response) {
-                        //console.log(response.data['_id']); //accessing via ._id doesn't work for some reason...
-                        messageID = response.data['_id'];
+                        messageID = response.data['_id']; //accessing via ._id doesn't work for some reason...
                       })
                 .catch((error) => {
                     if (error.response) {
@@ -47,7 +46,6 @@ async function handleSubmit(e){
                         alert(error.response.data);
                       }
                 });
-
         //nachricht bei sender speichern:
         URL = `${baseURL}/users/${user._id}/addnachrichtsender`;
         await axios.post(URL, { 
@@ -76,9 +74,24 @@ async function handleSubmit(e){
                 });
         recRef.current.value = "";
         messageRef.current.value = "";
+        //update user object:
+        URL = `${baseURL}/users/${user._id}`;
+        console.log(URL)
+        await axios.get(URL)
+        .then(function (response) {
+                console.log(response.data);
+                localStorage.setItem("user", JSON.stringify(response.data))
+                setUser(response.data);
+              })
+        .catch((error) => {
+            if (error.response) {
+                // Axios error with a response
+                console.log(error.response.data);
+                alert(error.response.data);
+              }
+        });
 }
     
-
     return(
     <div className="neuenachricht container">
         <h2>Neue Nachricht:</h2>

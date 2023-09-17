@@ -87,7 +87,7 @@ function App() {
         <Route path="/login" element={<Login setLoggedin={setLoggedin} setUser={setUser} setToken={setToken}/>}/>
         <Route path="/userliste" element={<UserListe userList={userList}/>}/>
         <Route path="/nachrichten" element={<Nachrichten/>}/>
-        <Route path="/neuenachricht" element={<NeueNachricht userList={userList} user={user}/>}/>
+        <Route path="/neuenachricht" element={<NeueNachricht userList={userList} user={user} setUser={setUser}/>}/>
       </Routes>
 
     </div>
