@@ -8,7 +8,7 @@ import Home from './components/Home';
 import UserListe from './components/UserListe';
 import Nachrichten from './components/Nachrichten';
 import NeueNachricht from './components/NeueNachricht';
-import { logDOM } from '@testing-library/react';
+import Einzelnachricht from './components/Einzelnachricht';
 
 function App() {
 
@@ -18,6 +18,7 @@ function App() {
   const [ user, setUser ] = useState(JSON.parse(localStorage.getItem("user")));
   const [ token, setToken ] = useState(localStorage.getItem("authtoken"));
   const [ userList, setUserlist ] = useState([]);
+  const [ aktuelleNachricht, setAktuellenachricht ] = useState({});
 
   useEffect(() => {
     axios.get(`${baseURL}/users`)
@@ -86,8 +87,9 @@ function App() {
         <Route path="/signup" element={<SignUp />}/>
         <Route path="/login" element={<Login setLoggedin={setLoggedin} setUser={setUser} setToken={setToken}/>}/>
         <Route path="/userliste" element={<UserListe userList={userList}/>}/>
-        <Route path="/nachrichten" element={<Nachrichten/>}/>
-        <Route path="/neuenachricht" element={<NeueNachricht userList={userList} user={user} setUser={setUser}/>}/>
+        <Route path="/nachrichten" element={<Nachrichten user={user} setAktuellenachricht={setAktuellenachricht}/>}/>
+        <Route path="/nachrichten/neuenachricht" element={<NeueNachricht userList={userList} user={user} setUser={setUser}/>}/>
+        <Route path="/nachrichten/einzelnachricht/:id" element={<Einzelnachricht aktuelleNachricht={aktuelleNachricht}/>} />
       </Routes>
 
     </div>
