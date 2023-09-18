@@ -10,6 +10,7 @@ export default function NeueNachricht({userList, user, setUser}){
     const [ suggestions, setSuggestions ] = useState([]);
     const [ empfaengerInput, setEmpfaengerinput ] = useState("");
     const [ showDropDown, setShowDropdown ] = useState(true);
+    const [ betreff, setBetreff ] = useState("");
     const [ text, setText ] = useState("");
 
     useEffect(() => {
@@ -28,13 +29,26 @@ export default function NeueNachricht({userList, user, setUser}){
 async function handleSubmit(e){
         e.preventDefault();
         //empfänger id rausfinden:
-        const empfID = userList.filter(user => user.username === empfaengerInput)[0]._id;
+        const empf = userList.filter(user => user.username === empfaengerInput);
+        let empfID = "";
+        //empfänger gibt es nicht checken:
+        if(empf.length > 0){
+                empfID = empf[0]._id;
+        } else {
+                alert("Diese/n User/in gibt es nicht bei uns!");
+                return;
+        }
         let messageID = ""; //state var use was too slow for 2nd post request
         let URL = `${baseURL}/nachrichten`;
         //create nachricht:
+        if(text.length === 0){
+                alert("Schreib doch lieber was!");
+                return;
+        }
         await axios.post(URL, { 
                 von: user._id, 
-                an: empfID, 
+                an: empfID,
+                betreff: betreff, 
                 text: text })
                 .then(function (response) {
                         messageID = response.data['_id']; //accessing via ._id doesn't work for some reason...
@@ -108,7 +122,7 @@ async function handleSubmit(e){
 
             <section>
                     <label htmlFor="betreff">Betreff:</label>
-                    <input className="form-input" type="text" id="betreff" name="betreff"/>
+                    <input className="form-input" type="text" id="betreff" name="betreff" onChange={(e) => setBetreff(e.target.value)}/>
             </section>
             <section>
                     <label htmlFor="nachricht">Nachricht:</label>

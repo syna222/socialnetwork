@@ -48,6 +48,7 @@ export default function ENachricht(){ //hier war akt Nachricht
     <div>
         <p>Gesendet: {aktuelleNachricht && aktuelleNachricht["datum"]}</p>
         <p>Von: {sender && sender["username"]}</p>
+        <p>Betreff: {aktuelleNachricht && aktuelleNachricht["betreff"].length >= 0 && aktuelleNachricht["betreff"]}</p>
         <p>{aktuelleNachricht && aktuelleNachricht["text"]}</p>
     </div>
     );
