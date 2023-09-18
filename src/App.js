@@ -8,7 +8,8 @@ import Home from './components/Home';
 import UserListe from './components/UserListe';
 import Nachrichten from './components/Nachrichten';
 import NeueNachricht from './components/NeueNachricht';
-import Einzelnachricht from './components/Einzelnachricht';
+import GNachricht from './components/GNachricht';
+import ENachricht from './components/ENachricht';
 
 function App() {
 
@@ -89,7 +90,8 @@ function App() {
         <Route path="/userliste" element={<UserListe userList={userList}/>}/>
         <Route path="/nachrichten" element={<Nachrichten user={user} setAktuellenachricht={setAktuellenachricht}/>}/>
         <Route path="/nachrichten/neuenachricht" element={<NeueNachricht userList={userList} user={user} setUser={setUser}/>}/>
-        <Route path="/nachrichten/einzelnachricht/:id" element={<Einzelnachricht aktuelleNachricht={aktuelleNachricht}/>} />
+        <Route path="/nachrichten/gnachricht/:id" element={<GNachricht aktuelleNachricht={aktuelleNachricht}/>} />
+        <Route path="/nachrichten/enachricht/:id" element={<ENachricht aktuelleNachricht={aktuelleNachricht}/>} />
       </Routes>
 
     </div>

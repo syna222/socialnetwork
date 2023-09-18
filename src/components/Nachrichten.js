@@ -11,7 +11,7 @@ export default function Nachrichten({user, setAktuellenachricht}){
         <ul>
             {user.empfangen.map((nachricht, i) => 
             <li key={i} onClick={() => setAktuellenachricht(nachricht)}>
-                <Link to={`/nachrichten/einzelnachricht/${nachricht["_id"]}`}>
+                <Link to={`/nachrichten/enachricht/${nachricht["_id"]}`}>
                     {nachricht["_id"]}
                 </Link>
             </li>)}
@@ -20,7 +20,7 @@ export default function Nachrichten({user, setAktuellenachricht}){
         <ul>
         {user.gesendet.map((nachricht, i) => 
             <li key={i} onClick={() => setAktuellenachricht(nachricht)}>
-                <Link to={`/nachrichten/einzelnachricht/${nachricht["_id"]}`}>
+                <Link to={`/nachrichten/gnachricht/${nachricht["_id"]}`}>
                     {nachricht["_id"]}
                 </Link>
             </li>)}

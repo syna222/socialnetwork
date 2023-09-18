@@ -2,39 +2,37 @@ import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 
-export default function Einzelnachricht(){ //hier war akt Nachricht
+export default function ENachricht(){ //hier war akt Nachricht
 
     const { id } = useParams(); //taking id from nachricht from URL (more stable across page refresh than prop)?
     const [ aktuelleNachricht, setAktuellenachricht ] = useState();
 
     const baseURL = process.env.REACT_APP_API_BASE_URL;
-    const [ empfaenger, setEmpfaenger ] = useState({});
+    const [ sender, setSender ] = useState({});
 
 
     async function getData(){
         //get nachricht:
         let URL = `${baseURL}/nachrichten/${id}`
-        let empfaengerID = "";
+        let senderID = "";
         await axios.get(URL)
             .then(response => {
-                empfaengerID = response.data["an"]
+                senderID = response.data["von"]
                 setAktuellenachricht(response.data)})
             .catch((error) => {
                 if (error.response) {
-                    // Axios error with a response
                     console.log(error.response.data);
                     alert(error.response.data);
                 }
             });
 
         //get empfänger:
-        URL = `${baseURL}/users/${empfaengerID}`
+        URL = `${baseURL}/users/${senderID}`
         await axios.get(URL)
             .then(response => {
-                setEmpfaenger(response.data)})
+                setSender(response.data)})
             .catch((error) => {
                 if (error.response) {
-                    // Axios error with a response
                     console.log(error.response.data);
                     alert(error.response.data);
                 }
@@ -49,7 +47,7 @@ export default function Einzelnachricht(){ //hier war akt Nachricht
     return(
     <div>
         <p>Gesendet: {aktuelleNachricht && aktuelleNachricht["datum"]}</p>
-        <p>An: {empfaenger && empfaenger["username"]}</p>
+        <p>Von: {sender && sender["username"]}</p>
         <p>{aktuelleNachricht && aktuelleNachricht["text"]}</p>
     </div>
     );
