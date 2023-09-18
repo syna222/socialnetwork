@@ -1,10 +1,10 @@
-export default function Home(){
+export default function Home({user}){
 
 
 
     return (
     <div className="home container">
-        <h2>Willkommen!</h2>
+        <h2>{user? `Willkommen,  ${user.username}!` : `Willkommen!`}</h2>
     </div>
     );
 }

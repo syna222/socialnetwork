@@ -84,7 +84,7 @@ function App() {
       </nav>
 
       <Routes>
-        <Route path="/" element={<Home />}/>
+        <Route path="/" element={<Home user={user}/>}/>
         <Route path="/signup" element={<SignUp />}/>
         <Route path="/login" element={<Login setLoggedin={setLoggedin} setUser={setUser} setToken={setToken}/>}/>
         <Route path="/userliste" element={<UserListe userList={userList}/>}/>
