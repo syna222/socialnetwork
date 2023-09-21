@@ -90,8 +90,8 @@ function App() {
         <Route path="/userliste" element={<UserListe userList={userList}/>}/>
         <Route path="/nachrichten" element={<Nachrichten user={user} setAktuellenachricht={setAktuellenachricht}/>}/>
         <Route path="/nachrichten/neuenachricht" element={<NeueNachricht userList={userList} user={user} setUser={setUser}/>}/>
-        <Route path="/nachrichten/gnachricht/:id" element={<GNachricht aktuelleNachricht={aktuelleNachricht}/>} />
-        <Route path="/nachrichten/enachricht/:id" element={<ENachricht aktuelleNachricht={aktuelleNachricht}/>} />
+        <Route path="/nachrichten/gnachricht/:id" element={<GNachricht aktuelleNachricht={aktuelleNachricht} user={user} setUser={setUser}/>} />
+        <Route path="/nachrichten/enachricht/:id" element={<ENachricht aktuelleNachricht={aktuelleNachricht} user={user} setUser={setUser}/>} />
       </Routes>
 
     </div>
