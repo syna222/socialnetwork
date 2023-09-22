@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
+import { sendMessage } from "./messageAPI"
 
 export default function ENachricht({user, setUser}){ //hier war akt Nachricht
 
@@ -31,7 +32,6 @@ export default function ENachricht({user, setUser}){ //hier war akt Nachricht
                     alert(error.response.data);
                 }
             });
-
         //get empfänger:
         URL = `${baseURL}/users/${senderID}`
         await axios.get(URL)
@@ -58,57 +58,22 @@ export default function ENachricht({user, setUser}){ //hier war akt Nachricht
         setBetreff(aktuelleNachricht["betreff"]);
     }
 
-    async function handleSubmit(e){
+    async function handleSubmit(e) {
         e.preventDefault();
-        if(text.length === 0){
+        if (text.length === 0) {
             alert("Schreib doch lieber was!");
             return;
         }
-        let messageID = ""; //state var use was too slow for 2nd post request
-        let URL = `${baseURL}/nachrichten`;
-        await axios.post(URL, { 
-                von: user._id, 
-                an: empfaenger,
-                betreff: betreff, 
-                text: text })
-                .then(function (response) {
-                        messageID = response.data['_id']; //accessing via ._id doesn't work for some reason...
-                    })
-                .catch((error) => {
-                    if (error.response) {
-                        // Axios error with a response
-                        console.log(error.response.data);
-                        alert(error.response.data);
-                    }
-                });
-        //nachricht bei sender speichern:
-        URL = `${baseURL}/users/${user._id}/addnachrichtsender`;
-        await axios.post(URL, { 
-                messageid: messageID})
-                .catch((error) => {
-                        if (error.response) {
-                            // Axios error with a response
-                            console.log(error.response.data);
-                            alert(error.response.data);
-                            console.log("test, messageID is:", messageID)
-                        }
-                });
-        //nachricht bei empfänger speichern:
-        URL = `${baseURL}/users/${empfaenger}/addnachrichtrec`;
-        await axios.post(URL, {
-                messageid: messageID})
-                .then(() => {
-                        alert("Nachricht wurde gesendet.")})
-                .catch((error) => {
-                        if (error.response) {
-                            // Axios error with a response
-                            console.log(error.response.data);
-                            alert(error.response.data);
-                            console.log("test, messageID is:", messageID)
-                        }
-                });
+        try {
+            await sendMessage(user._id, aktuelleNachricht["von"], betreff, text);
+        } catch (error) {
+            if (error.response) {
+            console.log(error.response.data);
+            alert(error.response.data);
+            }
+        }
         //update user object:
-        URL = `${baseURL}/users/${user._id}`;
+        const URL = `${baseURL}/users/${user._id}`;
         console.log(URL)
         await axios.get(URL)
         .then(function (response) {
@@ -125,6 +90,7 @@ export default function ENachricht({user, setUser}){ //hier war akt Nachricht
         });
         messageRef.current.value = "";
     }
+
 
     return(
     <div>

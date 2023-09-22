@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
+import { sendMessage } from "./messageAPI"
 
 export default function NeueNachricht({userList, user, setUser}){
 
@@ -25,71 +26,29 @@ export default function NeueNachricht({userList, user, setUser}){
         setSuggestions([]);  //funktioniert nur beim erneuten click
     }
 
-
-async function handleSubmit(e){
-        e.preventDefault();
-        //empfänger id rausfinden:
-        const empf = userList.filter(user => user.username === empfaengerInput);
-        let empfID = "";
-        //empfänger gibt es nicht checken:
-        if(empf.length > 0){
-                empfID = empf[0]._id;
-        } else {
-                alert("Diese/n User/in gibt es nicht bei uns!");
-                return;
+    async function handleSubmit(e) {
+        e.preventDefault();  
+        const empfaenger = userList.filter((user) => user.username === empfaengerInput);
+        if (empfaenger.length === 0) {
+        alert("Diese/n User/in gibt es nicht bei uns!");
+        return;
         }
-        let messageID = ""; //state var use was too slow for 2nd post request
-        let URL = `${baseURL}/nachrichten`;
-        //create nachricht:
-        if(text.length === 0){
-                alert("Schreib doch lieber was!");
-                return;
+        if (text.length === 0) {
+        alert("Schreib doch lieber was!");
+        return;
         }
-        await axios.post(URL, { 
-                von: user._id, 
-                an: empfID,
-                betreff: betreff, 
-                text: text })
-                .then(function (response) {
-                        messageID = response.data['_id']; //accessing via ._id doesn't work for some reason...
-                      })
-                .catch((error) => {
-                    if (error.response) {
-                        // Axios error with a response
-                        console.log(error.response.data);
-                        alert(error.response.data);
-                      }
-                });
-        //nachricht bei sender speichern:
-        URL = `${baseURL}/users/${user._id}/addnachrichtsender`;
-        await axios.post(URL, { 
-                messageid: messageID})
-                .catch((error) => {
-                        if (error.response) {
-                            // Axios error with a response
-                            console.log(error.response.data);
-                            alert(error.response.data);
-                            console.log("test, messageID is:", messageID)
-                          }
-                });
-        //nachricht bei empfänger speichern:
-        URL = `${baseURL}/users/${empfID}/addnachrichtrec`;
-        await axios.post(URL, {
-                messageid: messageID})
-                .then(() => {
-                        alert("Nachricht wurde gesendet.")})
-                .catch((error) => {
-                        if (error.response) {
-                            // Axios error with a response
-                            console.log(error.response.data);
-                            alert(error.response.data);
-                            console.log("test, messageID is:", messageID)
-                          }
-                });
+        try {
+        await sendMessage(user._id, empfaenger[0]._id, betreff, text);
+        } catch (error) {
+                if (error.response) {
+                console.log(error.response.data);
+                alert(error.response.data);
+                }
+        }
         recRef.current.value = "";
         messageRef.current.value = "";
         //update user object:
-        URL = `${baseURL}/users/${user._id}`;
+        const URL = `${baseURL}/users/${user._id}`;
         console.log(URL)
         await axios.get(URL)
         .then(function (response) {
@@ -104,7 +63,7 @@ async function handleSubmit(e){
                 alert(error.response.data);
               }
         });
-}
+    }
     
     return(
     <div className="neuenachricht container">
