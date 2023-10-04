@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import { sendMessage } from "./messageAPI"
 
-export default function GNachricht({user, setUser}){ //hier war akt Nachricht
+export default function GNachricht({user, setUser}){
 
     const { id } = useParams(); //taking id from nachricht from URL (more stable across page refresh than prop)?
     const [ aktuelleNachricht, setAktuellenachricht ] = useState();
@@ -31,7 +31,7 @@ export default function GNachricht({user, setUser}){ //hier war akt Nachricht
                     alert(error.response.data);
                 }
             });
-        //get empfänger:
+        //get empfänger:   //hier auch möglichkeit, aus userDict empfänger zu bekommen!
         URL = `${baseURL}/users/${empfaengerID}`
         await axios.get(URL)
             .then(response => {
@@ -91,7 +91,7 @@ export default function GNachricht({user, setUser}){ //hier war akt Nachricht
 
     return(
     <div>
-        <p>Gesendet: {aktuelleNachricht && aktuelleNachricht["datum"]}</p>
+        <p>Gesendet: {aktuelleNachricht && aktuelleNachricht["datum"].slice(0, 10) + " " + aktuelleNachricht["datum"].slice(11, 19)}</p>
         <p>An: {empfaenger && empfaenger["username"]}</p>
         <p>Betreff: {aktuelleNachricht && aktuelleNachricht["betreff"].length >= 0 && aktuelleNachricht["betreff"]}</p>
         <p>{aktuelleNachricht && aktuelleNachricht["text"]}</p>

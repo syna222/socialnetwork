@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import { sendMessage } from "./messageAPI"
 
-export default function ENachricht({user, setUser}){ //hier war akt Nachricht
+export default function ENachricht({user, setUser}){
 
     const { id } = useParams(); //taking id from nachricht from URL (more stable across page refresh than prop)?
     const [ aktuelleNachricht, setAktuellenachricht ] = useState();
@@ -94,7 +94,7 @@ export default function ENachricht({user, setUser}){ //hier war akt Nachricht
 
     return(
     <div>
-        <p>Gesendet: {aktuelleNachricht && aktuelleNachricht["datum"]}</p>
+        <p>Gesendet: {aktuelleNachricht && aktuelleNachricht["datum"].slice(0, 10) + " " + aktuelleNachricht["datum"].slice(11, 19)}</p>
         <p>Von: {sender && sender["username"]}</p>
         <p>Betreff: {aktuelleNachricht && aktuelleNachricht["betreff"].length >= 0 && aktuelleNachricht["betreff"]}</p>
         <p>{aktuelleNachricht && aktuelleNachricht["text"]}</p>

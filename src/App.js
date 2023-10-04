@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 import SignUp from './components/SignUp';
 import Login from './components/Login';
 import Home from './components/Home';
+import Stream from './components/Stream';
 import UserListe from './components/UserListe';
 import Nachrichten from './components/Nachrichten';
 import NeueNachricht from './components/NeueNachricht';
@@ -19,24 +20,38 @@ function App() {
   const [ user, setUser ] = useState(JSON.parse(localStorage.getItem("user")));
   const [ token, setToken ] = useState(localStorage.getItem("authtoken"));
   const [ userList, setUserlist ] = useState([]);
-  const [ aktuelleNachricht, setAktuellenachricht ] = useState({});
+  const [ userDict, setUserdict ] = useState({});  //ids as keys, usernames as values
+  const [ posts, setPosts ] = useState([]);
 
   useEffect(() => {
+    //get users:
     axios.get(`${baseURL}/users`)
     .then((response) => {
-      setUserlist(response.data)
+      setUserlist(response.data);
+      const idToUsernameDictionary = {};
+      response.data.forEach((user) => {          //using newly set userList would be too slow
+        idToUsernameDictionary[user._id] = user.username;
+      });
+      setUserdict(idToUsernameDictionary);
     })
     .catch((error) => {
       if (error.response) {
-        // Axios error with a response
         console.log(error.response.data);
         alert(error.response.data);
-      } else {
-        // Non-Axios error without a response
-        console.log("An error occurred:", error.message);
-        alert("An error occurred. Please try again.");
       }
     })
+    //get posts:
+    axios.get(`${baseURL}/posts`)
+    .then((response) => {
+      setPosts(response.data);
+    })
+    .catch((error) => {
+      if (error.response) {
+        console.log(error.response.data);
+        alert(error.response.data);
+      }
+    })
+
   }, []);
 
   //keep loggedIn state based on existence of token:
@@ -72,7 +87,10 @@ function App() {
       <NavLink className="nav-elem" to="/login">
         LOGIN
       </NavLink></>}
-      {loggedIn && <><NavLink className="nav-elem" to="/userliste">
+      {loggedIn && <><NavLink className="nav-elem" to="/stream">
+        STREAM
+      </NavLink>
+      <NavLink className="nav-elem" to="/userliste">
         USERLISTE
       </NavLink>
       <NavLink className="nav-elem" to="/nachrichten">
@@ -87,11 +105,12 @@ function App() {
         <Route path="/" element={<Home user={user}/>}/>
         <Route path="/signup" element={<SignUp />}/>
         <Route path="/login" element={<Login setLoggedin={setLoggedin} setUser={setUser} setToken={setToken}/>}/>
+        <Route path="/stream" element={<Stream posts={posts} setPosts={setPosts} userDict={userDict} user={user}/>}/>
         <Route path="/userliste" element={<UserListe userList={userList}/>}/>
-        <Route path="/nachrichten" element={<Nachrichten user={user} setAktuellenachricht={setAktuellenachricht}/>}/>
+        <Route path="/nachrichten" element={<Nachrichten user={user} userDict={userDict}/>}/>
         <Route path="/nachrichten/neuenachricht" element={<NeueNachricht userList={userList} user={user} setUser={setUser}/>}/>
-        <Route path="/nachrichten/gnachricht/:id" element={<GNachricht aktuelleNachricht={aktuelleNachricht} user={user} setUser={setUser}/>} />
-        <Route path="/nachrichten/enachricht/:id" element={<ENachricht aktuelleNachricht={aktuelleNachricht} user={user} setUser={setUser}/>} />
+        <Route path="/nachrichten/gnachricht/:id" element={<GNachricht user={user} setUser={setUser}/>} />
+        <Route path="/nachrichten/enachricht/:id" element={<ENachricht user={user} setUser={setUser}/>} />
       </Routes>
 
     </div>

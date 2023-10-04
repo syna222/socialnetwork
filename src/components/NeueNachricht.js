@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { sendMessage } from "./messageAPI"
 
@@ -6,7 +7,9 @@ export default function NeueNachricht({userList, user, setUser}){
 
     const baseURL = process.env.REACT_APP_API_BASE_URL;
     const recRef = useRef();
-    const messageRef = useRef();  //betreff später noch implementieren?
+    const betRef = useRef();
+    const messageRef = useRef();
+    const navigate = useNavigate();
 
     const [ suggestions, setSuggestions ] = useState([]);
     const [ empfaengerInput, setEmpfaengerinput ] = useState("");
@@ -38,7 +41,8 @@ export default function NeueNachricht({userList, user, setUser}){
         return;
         }
         try {
-        await sendMessage(user._id, empfaenger[0]._id, betreff, text);
+            await sendMessage(user._id, empfaenger[0]._id, betreff, text);
+            alert("Nachricht wurde gesendet.");
         } catch (error) {
                 if (error.response) {
                 console.log(error.response.data);
@@ -46,7 +50,9 @@ export default function NeueNachricht({userList, user, setUser}){
                 }
         }
         recRef.current.value = "";
+        betRef.current.value = "";
         messageRef.current.value = "";
+        navigate("/nachrichten");
         //update user object:
         const URL = `${baseURL}/users/${user._id}`;
         console.log(URL)
@@ -81,7 +87,7 @@ export default function NeueNachricht({userList, user, setUser}){
 
             <section>
                     <label htmlFor="betreff">Betreff:</label>
-                    <input className="form-input" type="text" id="betreff" name="betreff" onChange={(e) => setBetreff(e.target.value)}/>
+                    <input className="form-input" type="text" id="betreff" name="betreff" ref={betRef} onChange={(e) => setBetreff(e.target.value)}/>
             </section>
             <section>
                     <label htmlFor="nachricht">Nachricht:</label>
