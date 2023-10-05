@@ -7,14 +7,12 @@ export default function NeueNachricht({userList, user, setUser}){
 
     const baseURL = process.env.REACT_APP_API_BASE_URL;
     const recRef = useRef();
-    const betRef = useRef();
     const messageRef = useRef();
     const navigate = useNavigate();
 
     const [ suggestions, setSuggestions ] = useState([]);
     const [ empfaengerInput, setEmpfaengerinput ] = useState("");
     const [ showDropDown, setShowDropdown ] = useState(true);
-    const [ betreff, setBetreff ] = useState("");
     const [ text, setText ] = useState("");
 
     useEffect(() => {
@@ -41,7 +39,7 @@ export default function NeueNachricht({userList, user, setUser}){
         return;
         }
         try {
-            await sendMessage(user._id, empfaenger[0]._id, betreff, text);
+            await sendMessage(user._id, empfaenger[0]._id, text);
             alert("Nachricht wurde gesendet.");
         } catch (error) {
                 if (error.response) {
@@ -50,7 +48,6 @@ export default function NeueNachricht({userList, user, setUser}){
                 }
         }
         recRef.current.value = "";
-        betRef.current.value = "";
         messageRef.current.value = "";
         navigate("/nachrichten");
         //update user object:
@@ -85,10 +82,6 @@ export default function NeueNachricht({userList, user, setUser}){
                 )}
             </div>
 
-            <section>
-                    <label htmlFor="betreff">Betreff:</label>
-                    <input className="form-input" type="text" id="betreff" name="betreff" ref={betRef} onChange={(e) => setBetreff(e.target.value)}/>
-            </section>
             <section>
                     <label htmlFor="nachricht">Nachricht:</label>
                     <textarea id="nachricht" name="nachricht" ref={messageRef} onChange={(e) => setText(e.target.value)}></textarea>
