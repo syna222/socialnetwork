@@ -110,7 +110,7 @@ function App() {
         <Route path="/userliste" element={<UserListe userList={userList}/>}/>
         <Route path="/nachrichten" element={<Nachrichten user={user} setThread={setThread} setCollocutor={setCollocutor}/>}/>
         <Route path="/nachrichten/neuenachricht" element={<NeueNachricht userList={userList} user={user} setUser={setUser}/>}/>
-        <Route path="/nachrichten/aktuellerthread" element={<Thread thread={thread} collocutor={collocutor}/>}/>
+        <Route path="/nachrichten/aktuellerthread" element={<Thread thread={thread} user={user} setUser={setUser} collocutor={collocutor}/>}/>
       </Routes>
 
     </div>

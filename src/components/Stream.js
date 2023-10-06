@@ -61,8 +61,6 @@ export default function Stream({posts, setPosts, userDict, user}){
         })
     }
 
-    console.log(posts)
-
     return(
     <div>
         <form onSubmit={handleSubmit}>
