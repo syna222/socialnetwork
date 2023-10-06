@@ -9,6 +9,7 @@ import Stream from './components/Stream';
 import UserListe from './components/UserListe';
 import Nachrichten from './components/Nachrichten';
 import NeueNachricht from './components/NeueNachricht';
+import Thread from './components/Thread';
 
 function App() {
 
@@ -20,6 +21,8 @@ function App() {
   const [ userList, setUserlist ] = useState([]);
   const [ userDict, setUserdict ] = useState({});  //ids as keys, usernames as values
   const [ posts, setPosts ] = useState([]);
+  const [ thread, setThread ] = useState([]);
+  const [ collocutor, setCollocutor ] = useState(); //for current conversation partner in selected thread
 
   useEffect(() => {
     //get users:
@@ -105,8 +108,9 @@ function App() {
         <Route path="/login" element={<Login setLoggedin={setLoggedin} setUser={setUser} setToken={setToken}/>}/>
         <Route path="/stream" element={<Stream posts={posts} setPosts={setPosts} userDict={userDict} user={user}/>}/>
         <Route path="/userliste" element={<UserListe userList={userList}/>}/>
-        <Route path="/nachrichten" element={<Nachrichten user={user} userDict={userDict}/>}/>
+        <Route path="/nachrichten" element={<Nachrichten user={user} setThread={setThread} setCollocutor={setCollocutor}/>}/>
         <Route path="/nachrichten/neuenachricht" element={<NeueNachricht userList={userList} user={user} setUser={setUser}/>}/>
+        <Route path="/nachrichten/aktuellerthread" element={<Thread thread={thread} collocutor={collocutor}/>}/>
       </Routes>
 
     </div>
