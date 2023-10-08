@@ -21,8 +21,6 @@ function App() {
   const [ userList, setUserlist ] = useState([]);
   const [ userDict, setUserdict ] = useState({});  //ids as keys, usernames as values
   const [ posts, setPosts ] = useState([]);
-  const [ thread, setThread ] = useState([]);
-  const [ collocutor, setCollocutor ] = useState(); //for current conversation partner in selected thread
 
   useEffect(() => {
     //get users:
@@ -108,9 +106,9 @@ function App() {
         <Route path="/login" element={<Login setLoggedin={setLoggedin} setUser={setUser} setToken={setToken}/>}/>
         <Route path="/stream" element={<Stream posts={posts} setPosts={setPosts} userDict={userDict} user={user}/>}/>
         <Route path="/userliste" element={<UserListe userList={userList}/>}/>
-        <Route path="/nachrichten" element={<Nachrichten user={user} setThread={setThread} setCollocutor={setCollocutor}/>}/>
+        <Route path="/nachrichten" element={<Nachrichten user={user} />}/>
         <Route path="/nachrichten/neuenachricht" element={<NeueNachricht userList={userList} user={user} setUser={setUser}/>}/>
-        <Route path="/nachrichten/aktuellerthread" element={<Thread thread={thread} user={user} setUser={setUser} collocutor={collocutor}/>}/>
+        <Route path="/nachrichten/aktuellerthread/:collid" element={<Thread user={user} userDict={userDict} setUser={setUser}/>}/>
       </Routes>
 
     </div>

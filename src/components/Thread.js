@@ -1,14 +1,40 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 import { sendMessage } from "./messageAPI"
 
-export default function Thread({user, setUser, thread, collocutor}){
+export default function Thread({user, setUser, userDict}){
 
     const baseURL = process.env.REACT_APP_API_BASE_URL;
     const messageRef = useRef();
     const navigate = useNavigate();
     const [ text, setText ] = useState("");
+
+    const { collid } = useParams(); //id of collocutor
+
+    const [ thread, setThread ] = useState([])
+    const collocutorName = userDict[collid];
+
+    useEffect(() => {
+        filterThread();
+    }, []);
+
+      async function filterThread(){
+        //get alle nachrichten from api + filter nach konversation zw userid und collid:
+        await axios.get(`${baseURL}/nachrichten`)
+                    .then((response) => {
+                        const filteredArr = response.data.filter((inst) => 
+                                (inst.von === user["_id"] && inst.an === collid) || (inst.von === collid && inst.an === user["_id"]))  //und dann sort by date!!
+                        setThread(filteredArr)
+                    })
+                    .catch((err) => {
+                        if (err.response) {
+                            console.log(err.response.data);
+                            alert(err.response.data);
+                          }
+                    })
+    }
+
 
     async function handleSubmit(e) {
         e.preventDefault();  
@@ -17,9 +43,9 @@ export default function Thread({user, setUser, thread, collocutor}){
         return;
         }
         try {
-            await sendMessage(user._id, collocutor["_id"], text);
+            await sendMessage(user._id, collid, text);
             alert("Nachricht wurde gesendet.");
-            window.location.reload(); //funzt das hier? aber daten lost nach page refresh...
+            window.location.reload();
         } catch (error) {
                 if (error.response) {
                 console.log(error.response.data);
@@ -27,7 +53,7 @@ export default function Thread({user, setUser, thread, collocutor}){
                 }
         }
         messageRef.current.value = "";
-        navigate("/nachrichten/aktuellerthread");
+        navigate(`/nachrichten/aktuellerthread/${collid}`);
         //update user object:
         const URL = `${baseURL}/users/${user._id}`;
         console.log(URL)
@@ -48,7 +74,7 @@ export default function Thread({user, setUser, thread, collocutor}){
 
     return(
     <div className="thread container">
-        <h3>{collocutor? "Mit " + collocutor.username : "Thread"}</h3>
+        {thread.length > 0 && <><h3>{collocutorName? "Mit " + collocutorName : "Thread"}</h3>
         <ul>
             {thread.map((item, i) => 
             <li {...(item.von === user["_id"] ? {className:"mine"} : {})} key={i}>{`${item.text} (${item.datum.slice(0, 10)} ${item.datum.slice(11, 19)})`}</li>)}
@@ -61,7 +87,7 @@ export default function Thread({user, setUser, thread, collocutor}){
             <section>
                     <div className="button-container"><button type="submit" className="absenden-btn">absenden</button></div>
             </section>
-        </form>
+        </form></>}
     </div>
     );
 }
