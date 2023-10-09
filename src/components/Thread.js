@@ -77,7 +77,10 @@ export default function Thread({user, setUser, userDict}){
         {thread.length > 0 && <><h3>{collocutorName? "Mit " + collocutorName : "Thread"}</h3>
         <ul>
             {thread.map((item, i) => 
-            <li {...(item.von === user["_id"] ? {className:"mine"} : {})} key={i}>{`${item.text} (${item.datum.slice(0, 10)} ${item.datum.slice(11, 19)})`}</li>)}
+                <li {...(item.von === user["_id"] ? {className:"mine"} : {})} key={i}>
+                    {item.von === user["_id"] ? "DU: " : collocutorName.toUpperCase() + ": "}
+                    {`${item.text} (${item.datum.slice(0, 10)} ${item.datum.slice(11, 19)})`}
+                </li>)}
         </ul>
         <form onSubmit={handleSubmit}>
             <section>

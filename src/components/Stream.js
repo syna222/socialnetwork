@@ -31,6 +31,19 @@ export default function Stream({posts, setPosts, userDict, user}){
         setText("");
     }
 
+    function fetchPosts(){
+      axios.get(`${baseURL}/posts`)
+      .then((response) => {
+        setPosts(response.data);
+      })
+      .catch((error) => {
+        if (error.response) {
+          console.log(error.response.data);
+          alert(error.response.data);
+        }
+      })
+    }
+
     function deletePost(e, postid){ 
         e.preventDefault();
         try{
@@ -48,18 +61,39 @@ export default function Stream({posts, setPosts, userDict, user}){
                 alert("An error occurred. Please try again.");
               }
         }
-        //posts erneut fetchen:
-        axios.get(`${baseURL}/posts`)
-        .then((response) => {
-          setPosts(response.data);
-        })
-        .catch((error) => {
+        //posts erneut einholen:
+        fetchPosts();
+    }
+
+
+    async function toggleLike(e, postid, postlikes){
+        e.preventDefault();
+        //NOW: if post.likes includes user._id the like should be removed - otherwise it should be added:
+        try{
+          if(postlikes.includes(user._id)){
+            console.log(`${baseURL}/posts/${postid}/removelike`)
+              await axios.delete(`${baseURL}/posts/${postid}/removelike`, { 
+                data: {likerId: user._id}  //data keyword needed with delete method when the delete info isn't all in the req.params!!
+              })
+              .then(() => window.location.reload());
+          } else {
+              await axios.post(`${baseURL}/posts/${postid}/addlike`, {
+                likerId: user._id
+              })
+              .then(() => window.location.reload());
+          }
+
+        }
+        catch(error){
           if (error.response) {
             console.log(error.response.data);
             alert(error.response.data);
           }
-        })
+        }
+        //posts erneut einholen:
+        fetchPosts();
     }
+
 
     return(
     <div>
@@ -74,9 +108,10 @@ export default function Stream({posts, setPosts, userDict, user}){
         </form>
         {posts.map((post, i) => 
         <div key={i}>
-            <p>{post.datum}</p>
+            <p>{`${post.datum.slice(0, 10)} ${post.datum.slice(11, 19)}`}</p>
             <p>von: {post.von === user._id ? "dir" : userDict[post.von]}</p>
             <p>{post.text}{post.von === user._id ? <button onClick={(e) => deletePost(e, post._id)}>löschen</button> : ""}</p>
+            <span>{post.likes.length}x gemocht. </span><button onClick={(e) => toggleLike(e, post._id, post.likes)}> {post.likes.includes(user._id)? '✔️' : '❤️'}</button>
         </div>
         )}
     </div>
