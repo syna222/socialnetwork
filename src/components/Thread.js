@@ -11,15 +11,20 @@ export default function Thread({user, setUser, userDict}){
     const [ text, setText ] = useState("");
 
     const { collid } = useParams(); //id of collocutor
+    const [ thread, setThread ] = useState([]);
+    const [collocutorName, setCollocutorName] = useState("");
 
-    const [ thread, setThread ] = useState([])
-    const collocutorName = userDict[collid];
+    useEffect(() => {
+        if (userDict[collid]) {
+            setCollocutorName(userDict[collid]);
+        }
+    }, [collid, userDict]);
 
     useEffect(() => {
         filterThread();
     }, []);
 
-      async function filterThread(){
+    async function filterThread(){
         //get alle nachrichten from api + filter nach konversation zw userid und collid:
         await axios.get(`${baseURL}/nachrichten`)
                     .then((response) => {
@@ -72,6 +77,27 @@ export default function Thread({user, setUser, userDict}){
         });
     }
 
+    async function deleteMessage(e, messageid){
+        e.preventDefault();
+        try{
+            await axios.delete(`${baseURL}/nachrichten/${messageid}`)
+            .then(() => window.location.reload());
+        }
+        catch(error){
+            if (error.response) {
+                // Axios error with a response
+                console.log(error.response.data);
+                alert(error.response.data);
+              } else {
+                // Non-Axios error without a response
+                console.log("An error occurred:", error.message);
+                alert("An error occurred. Please try again.");
+              }
+        }
+        //nachrichten erneut einholen:
+        filterThread(); //?
+    }
+
     return(
     <div className="thread container">
         {thread.length > 0 && <><h3>{collocutorName? "Mit " + collocutorName : "Thread"}</h3>
@@ -80,6 +106,7 @@ export default function Thread({user, setUser, userDict}){
                 <li {...(item.von === user["_id"] ? {className:"mine"} : {})} key={i}>
                     {item.von === user["_id"] ? "DU: " : collocutorName.toUpperCase() + ": "}
                     {`${item.text} (${item.datum.slice(0, 10)} ${item.datum.slice(11, 19)})`}
+                    {item.von === user["_id"] ? <button onClick={(e) => deleteMessage(e, item._id)}>löschen</button> : null}
                 </li>)}
         </ul>
         <form onSubmit={handleSubmit}>
