@@ -67,8 +67,12 @@ nav {
   border: 1px solid black;
   border-radius: 5px;
   margin-top: 5vh;
+  transition: transform 1.5s ease-in-out;
 }
 
+.logo-taube:hover {
+  transform: translateX(200%);
+}
 
 
 /*userliste*/
@@ -95,7 +99,8 @@ textarea {
 }
 
 .post {
-  border: 2px solid rgba(201, 71, 201);
+  background-color: white;
+  border: 1px solid black;
   border-radius: 5px;
 }
 
