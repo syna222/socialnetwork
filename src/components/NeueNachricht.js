@@ -87,7 +87,7 @@ export default function NeueNachricht({userList, user, setUser}){
                     <textarea id="nachricht" name="nachricht" ref={messageRef} onChange={(e) => setText(e.target.value)}></textarea>
             </section>
             <section>
-                    <div className="button-container"><button type="submit" className="absenden-btn">absenden</button></div>
+                    <div className="button-container"><button className="app-button absenden-btn" type="submit">absenden</button></div>
             </section>
         </form>
     </div>

@@ -96,22 +96,24 @@ export default function Stream({posts, setPosts, userDict, user}){
 
 
     return(
-    <div>
-        <form onSubmit={handleSubmit}>
+    <div className="stream container">
+      <h2>Unser Stream:</h2>
+        <form className="stream-item" onSubmit={handleSubmit}>
             <section>
-                <div htmlFor="post">Poste selbst!:</div>
+                <h3>Poste selbst etwas!</h3>
                 <textarea id="post" name="post" ref={postRef} onChange={(e) => setText(e.target.value)}></textarea>
             </section>
             <section>
-                    <div className="button-container"><button type="submit" className="absenden-btn">absenden</button></div>
+                    <div className="button-container"><button className="app-button absenden-btn" type="submit">absenden</button></div>
             </section>
         </form>
         {posts.map((post, i) => 
-        <div key={i}>
-            <p>{`${post.datum.slice(0, 10)} ${post.datum.slice(11, 19)}`}</p>
-            <p>von: {post.von === user._id ? "dir" : userDict[post.von]}</p>
-            <p>{post.text}{post.von === user._id ? <button onClick={(e) => deletePost(e, post._id)}>löschen</button> : ""}</p>
-            <span>{post.likes.length}x gemocht. </span><button onClick={(e) => toggleLike(e, post._id, post.likes)}> {post.likes.includes(user._id)? '✔️' : '❤️'}</button>
+        <div key={i} className="stream-item post">
+            <p className="coloured-font post-date">{`${post.datum.slice(0, 10)} ${post.datum.slice(11, 19)}`}</p>
+            <p className="coloured-font">von: {post.von === user._id ? "dir" : userDict[post.von]}</p>
+            <p>{post.text}</p>
+            <span className="coloured-font">{post.likes.length}x gemocht. </span><button className="app-button" onClick={(e) => toggleLike(e, post._id, post.likes)}> {post.likes.includes(user._id)? '✔️' : '❤️'}</button>
+            {post.von === user._id ? <button className="app-button delete-post-btn" onClick={(e) => deletePost(e, post._id)}>Post löschen</button> : ""}
         </div>
         )}
     </div>

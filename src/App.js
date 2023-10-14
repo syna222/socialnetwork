@@ -76,7 +76,7 @@ function App() {
 
   return (
     <div className="App">
-      <nav>
+      <nav className="coloured">
       <NavLink className="nav-elem" to="/">
         HOME
       </NavLink>
@@ -95,7 +95,7 @@ function App() {
       <NavLink className="nav-elem" to="/nachrichten">
         NACHRICHTEN
       </NavLink>
-      <button onClick={handleLogout}>
+      <button  className="app-button" onClick={handleLogout}>
         LOGOUT
       </button></>}
       </nav>

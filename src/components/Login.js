@@ -58,7 +58,7 @@ export default function Login({ setLoggedin, setUser, setToken }){
                 <input className="form-input" type="password" id="passwort" name="passwort" ref={inputPasswortRef} onChange={(e) => setPasswort(e.target.value)}/>
             </section>
             <section>
-                <input type="submit" value="einloggen"/>
+                <input  className="app-button" type="submit" value="einloggen"/>
             </section>
         </form>
     </div>

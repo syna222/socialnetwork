@@ -101,7 +101,7 @@ export default function Thread({user, setUser, userDict}){
     return(
     <div className="thread container">
         {thread.length > 0 && <><h3>{collocutorName? "Mit " + collocutorName : "Thread"}</h3>
-        <ul>
+        <ul className="messagelist">
             {thread.map((item, i) => 
                 <li {...(item.von === user["_id"] ? {className:"mine"} : {})} key={i}>
                     {item.von === user["_id"] ? "DU: " : collocutorName.toUpperCase() + ": "}
