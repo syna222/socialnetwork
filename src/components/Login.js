@@ -48,16 +48,16 @@ export default function Login({ setLoggedin, setUser, setToken }){
 
     return (
     <div className="login container">
-        <form onSubmit={handleSubmit}>
-            <section>
+        <form className="login-form" onSubmit={handleSubmit}>
+            <section className="log-sign-section">
                 <label htmlFor="email">Email:</label>
                 <input className="form-input" type="text" id="email" name="passwort" ref={inputEmailRef} onChange={(e) => setEmail(e.target.value)}/>
             </section>
-            <section>
+            <section className="log-sign-section">
                 <label htmlFor="passwort">Passwort:</label>
                 <input className="form-input" type="password" id="passwort" name="passwort" ref={inputPasswortRef} onChange={(e) => setPasswort(e.target.value)}/>
             </section>
-            <section>
+            <section className="log-sign-section">
                 <input  className="app-button" type="submit" value="einloggen"/>
             </section>
         </form>

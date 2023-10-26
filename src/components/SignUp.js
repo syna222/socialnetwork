@@ -39,21 +39,21 @@ export default function SignUp(){
 
     return (
     <div className="signup container">
-        <form onSubmit={handleSubmit}>
-            <section>
+        <form className="signup-form" onSubmit={handleSubmit}>
+            <section className="log-sign-section">
                 <label htmlFor="username">Username:</label>
                 <input className="form-input" type="text" id="username" name="username" ref={inputUsernameRef} onChange={(e) => setUsername(e.target.value)}/>
             </section>
-            <section>
+            <section className="log-sign-section">
                 <label htmlFor="signup-email">Email:</label>
                 <input className="form-input" type="text" id="signup-email" name="signup-email" ref={inputEmailRef} onChange={(e) => setEmail(e.target.value)}/>
             </section>
-            <section>
+            <section className="log-sign-section">
                 <label htmlFor="signup-passwort">Passwort:</label>
                 <input className="form-input" type="password" id="signup-passwort" name="signup-passwort" ref={inputPasswortRef} onChange={(e) => setPasswort(e.target.value)}/>
             </section>
-            <section>
-                <input  className="app-button" type="submit" value="Account erstellen"/>
+            <section className="log-sign-section">
+                <input className="app-button" type="submit" value="Account erstellen"/>
             </section>
         </form>
     </div>

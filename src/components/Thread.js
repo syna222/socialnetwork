@@ -100,24 +100,26 @@ export default function Thread({user, setUser, userDict}){
 
     return(
     <div className="thread container">
-        {thread.length > 0 && <><h3>{collocutorName? "Mit " + collocutorName : "Thread"}</h3>
-        <ul className="messagelist">
-            {thread.map((item, i) => 
-                <li {...(item.von === user["_id"] ? {className:"mine"} : {})} key={i}>
-                    {item.von === user["_id"] ? "DU: " : collocutorName.toUpperCase() + ": "}
-                    {`${item.text} (${item.datum.slice(0, 10)} ${item.datum.slice(11, 19)})`}
-                    {item.von === user["_id"] ? <button onClick={(e) => deleteMessage(e, item._id)}>löschen</button> : null}
-                </li>)}
-        </ul>
-        <form onSubmit={handleSubmit}>
-            <section>
-                    <label htmlFor="nachricht">Nachricht:</label>
-                    <textarea id="nachricht" name="nachricht" ref={messageRef} onChange={(e) => setText(e.target.value)}></textarea>
-            </section>
-            <section>
-                    <div className="button-container"><button type="submit" className="absenden-btn">absenden</button></div>
-            </section>
-        </form></>}
+        {thread.length > 0 && <><h2>{collocutorName? "Mit " + collocutorName : "Thread"}</h2>
+        <div className="konversation">
+            <div className="alte-nachrichten">
+                    {thread.map((item, i) => 
+                        <div {...(item.von === user["_id"] ? {className:"nachricht mine"} : {className: "nachricht theirs"})} key={i}>
+                            <span className="datum-tag">
+                                {item.datum.slice(0, 10) + " " + item.datum.slice(11, 19)}
+                            </span>
+                            <span className="absender-tag">{item.von === user["_id"] ? "du: " : collocutorName + ": "}</span>
+                            {item.text}
+
+                            {item.von === user["_id"] ? <button className="app-button delete-post-btn" onClick={(e) => deleteMessage(e, item._id)}>löschen</button> : null}
+                        </div>)}
+            </div>
+            <form className="weitere-nachricht-form" onSubmit={handleSubmit}>
+                    <label className="weitere-nachricht-label" htmlFor="nachricht">Deine Nachricht:</label>
+                    <textarea className="weitere-nachricht-text" id="nachricht" name="nachricht" ref={messageRef} onChange={(e) => setText(e.target.value)}></textarea>
+                    <div className="button-container-wn"><button className="app-button absenden-btn" type="submit">absenden</button></div>
+            </form>
+        </div></>}
     </div>
     );
 }

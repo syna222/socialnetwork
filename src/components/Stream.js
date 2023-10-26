@@ -101,7 +101,7 @@ export default function Stream({posts, setPosts, userDict, user}){
         <form className="stream-item" onSubmit={handleSubmit}>
             <section>
                 <h3>Poste selbst etwas!</h3>
-                <textarea id="post" name="post" ref={postRef} onChange={(e) => setText(e.target.value)}></textarea>
+                <textarea className="post-textarea" id="post" name="post" ref={postRef} onChange={(e) => setText(e.target.value)}></textarea>
             </section>
             <section>
                     <div className="button-container"><button className="app-button absenden-btn" type="submit">absenden</button></div>

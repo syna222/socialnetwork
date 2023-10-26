@@ -71,24 +71,17 @@ export default function NeueNachricht({userList, user, setUser}){
     return(
     <div className="neuenachricht container">
         <h2>Neue Nachricht:</h2>
-        <form onSubmit={handleSubmit}>
-            <section>
-                    <label htmlFor="empfaenger">An:</label>
-                    <input className="form-input" type="text" id="empfaenger" name="empfaenger" ref={recRef} onChange={(e) => setEmpfaengerinput(e.target.value.toLowerCase())} value={empfaengerInput}/>
-            </section>
+        <form className="nachricht-formular" onSubmit={handleSubmit}>
+            <label className="empf-label" htmlFor="empfaenger">An:</label>
+            <input className="empf-input" type="text" id="empfaenger" name="empfaenger" ref={recRef} onChange={(e) => setEmpfaengerinput(e.target.value.toLowerCase())} value={empfaengerInput}/>
             <div className="dropdown">
                 {showDropDown && suggestions.length > 0 && suggestions.map((user, i) => 
                         <div key={i} className="clickable" onClick={() => handleDivClick(user.username)}>{user.username}</div>
                 )}
             </div>
-
-            <section>
-                    <label htmlFor="nachricht">Nachricht:</label>
-                    <textarea id="nachricht" name="nachricht" ref={messageRef} onChange={(e) => setText(e.target.value)}></textarea>
-            </section>
-            <section>
-                    <div className="button-container"><button className="app-button absenden-btn" type="submit">absenden</button></div>
-            </section>
+            <label className="neue-nachricht-label" htmlFor="nachricht">Nachricht:</label>
+            <textarea className="nachricht-input" id="nachricht" name="nachricht" ref={messageRef} onChange={(e) => setText(e.target.value)}></textarea>
+            <div className="button-container"><button className="app-button absenden-btn" type="submit">absenden</button></div>
         </form>
     </div>
     );
